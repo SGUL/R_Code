@@ -1,0 +1,49 @@
+info <- function(as.text=FALSE, package.info=TRUE) {
+  ### R version:
+  r.version <- sessionInfo()[1]$R.version$version.string
+  ### Hostname:
+  hostname <- function() {
+    (os.info <- system("uname -a", intern = T))
+    (is.linux <- grepl("Linux", os.info))
+    if(is.linux) {
+      return(system("hostname", intern=TRUE))
+    } else {
+      return(system("scutil --get ComputerName", intern=TRUE))
+    } # end if
+  } # end function
+  ### Date:
+  #date.string <- system("date '+%d %b %Y'", intern=TRUE)
+  ### Time:
+  #time.string <- format(Sys.time(), "%r")
+  ### Date/time:
+  date.time.string <- format(Sys.time(), "Date: %a %b %d, %Y. Time: %X")
+  # Construct list:
+  li <- list()
+  li$r.version <- r.version
+  li$hostname <- hostname()
+  li$platform <- sessionInfo()$platform
+  li$date.time <- date.time.string
+  names(li) <- c("r.version", "hostname", "date.time")
+  #li$date <- date.string
+  #li$time <- time.string
+  if (exists("this.script")) {
+    li$script.used <- this.script
+  } # end if
+  if (package.info==TRUE) {
+    pa <- names(sessionInfo()$otherPkgs)
+    pv <- unlist(lapply(pa, function(x) {packageDescription(x, fields = "Version")}))
+    packs <- paste(pa, pv)
+    packs <- paste(packs, collapse="; ")
+    li$packages <- packs
+  }
+  
+  if (as.text==TRUE) {
+    (t1 <- unlist(li))
+    (t2 <- paste("#", t1))
+    (t3 <- paste(t2, collapse="\n"))
+    (t4 <- paste(t3, "\n", sep=""))
+    return(t4)
+  } else {
+    return(li)
+  } # end if
+} # end function
