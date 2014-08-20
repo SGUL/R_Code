@@ -29,6 +29,7 @@ info <- function(as.text=FALSE, package.info=TRUE) {
   if (exists("this.script")) {
     li$script.used <- this.script
   } # end if
+  li$interactive <- paste("interactive:", interactive())
   if (package.info==TRUE) {
     pa <- names(sessionInfo()$otherPkgs)
     pv <- unlist(lapply(pa, function(x) {packageDescription(x, fields = "Version")}))
