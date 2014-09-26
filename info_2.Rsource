@@ -17,6 +17,8 @@ info <- function(as.text=FALSE, package.info=TRUE) {
   #time.string <- format(Sys.time(), "%r")
   ### Date/time:
   date.time.string <- format(Sys.time(), "Date: %a %b %d, %Y. Time: %X")
+  # Working directory:
+  wd <- getwd()
   # Construct list:
   li <- list()
   li$r.version <- r.version
@@ -29,6 +31,7 @@ info <- function(as.text=FALSE, package.info=TRUE) {
   if (exists("this.script")) {
     li$script.used <- this.script
   } # end if
+  li$workingdir <- wd
   li$interactive <- paste("interactive:", interactive())
   if (package.info==TRUE) {
     pa <- names(sessionInfo()$otherPkgs)
